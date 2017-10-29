@@ -3,19 +3,14 @@ package com.chnjan.xmlutil;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
 import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.collections4.map.ListOrderedMap;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 /**
  * 
@@ -44,18 +39,38 @@ public class XmltoMap {
 		SAXReader saxReader = new SAXReader();
 		Document document = saxReader.read(is);
 		Element rootElement = document.getRootElement();
-		
-		//用于存放转换的map
-		Map<String, Object> converResult = new ListOrderedMap<String, Object>();
-		
+			
 		//转换
-		resovle(rootElement, converResult);
+		Map<String, Object> converResult = resovle(rootElement);
 		return converResult;
 	}
 	
-	public static void resovle(Element element,Map<String, Object> result) 
+	/**
+	 * 将element对象解析成map
+	 * @param element dom4j的Element对象
+	 * @return 转换后的map类型
+	 * 
+	 * */
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> resovle(Element element) 
 	{
+		Map<String, Object> result = new ListOrderedMap<String, Object>();
+		//元素的迭代器
+		Iterator<Element> iterator = element.elementIterator();
+		//遍历元素
+		while (iterator.hasNext()) {
+			Element e = iterator.next();
+			if (e.isTextOnly()) {
+				//如果没有子节点了将元素名和值以键值对的形式放入map
+				result.put(e.getName(), e.getText());
+			} else {
+				//如果此元素下还有子节点则递归
+				Map<String, Object> childMap = resovle(e);
+				result.put(e.getName(), childMap);
+			}
+		}
 		
+		return result;
 	}
 
 }
