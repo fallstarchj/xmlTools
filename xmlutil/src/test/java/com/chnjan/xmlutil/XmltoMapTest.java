@@ -34,7 +34,7 @@ public class XmltoMapTest {
 		try {
 			datamap = XmltoMap.toMap(stringxml, "utf-8");
 		} catch (Exception e) {
-			
+			//异常
 			e.printStackTrace();
 		}
 		System.out.println(datamap);

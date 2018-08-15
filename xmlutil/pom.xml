@@ -18,6 +18,7 @@
 	    <version>${junit-version}</version>
 	    <scope>test</scope>
     </dependency>
+    
     <dependency>
 	    <groupId>log4j</groupId>
 	    <artifactId>log4j</artifactId>
@@ -31,7 +32,7 @@
 	<dependency>
 	    <groupId>dom4j</groupId>
 	    <artifactId>dom4j</artifactId>
-	    <version>${dom4j-version}</version>
+	    <version>${dom4j-version}</version> 
 	</dependency>
 	
 	
